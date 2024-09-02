@@ -5,8 +5,8 @@ use reqwest::Client;
 use std::time::Duration;
 use tokio::time::sleep;
 use crate::error_tracker::ErrorTracker;
-use crate::configuration::Configuration;
-use crate::fetch::{error_dashboard_fetch, CustomFetchProps, ErrorPayload, ErrorResponseType, ConfigKey, ConfigValue};
+use crate::configuration::{Configuration, ConfigKey, ConfigValue};
+use crate::fetch::{error_dashboard_fetch, CustomFetchProps, ErrorPayload, ErrorResponseType};
 
 #[derive(Debug)]
 pub struct ErrorDashboardClient {
