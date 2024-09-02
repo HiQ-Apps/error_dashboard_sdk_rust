@@ -6,7 +6,7 @@ use std::time::Duration;
 use tokio::time::sleep;
 use crate::error_tracker::ErrorTracker;
 use crate::configuration::Configuration;
-use crate::fetch::{error_dashboard_fetch, CustomFetchProps, ErrorPayload, ErrorResponseType};
+use crate::fetch::{error_dashboard_fetch, CustomFetchProps, ErrorPayload, ErrorResponseType, ConfigKey, ConfigValue};
 
 #[derive(Debug)]
 pub struct ErrorDashboardClient {
