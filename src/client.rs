@@ -44,9 +44,22 @@ impl ErrorDashboardClient {
         let error_details = format!("{}", boxed_error);
 
         let configs = self.configs.lock().unwrap();
-        let retry_attempts = configs.get_config("retryAttempts").unwrap_or(3);
-        let retry_delay = configs.get_config("retryDelay").unwrap_or(3000);
-        let verbose = configs.get_config("verbose").unwrap_or(false);
+
+        let retry_attempts = match configs.get_config(ConfigKey::RetryAttempts) {
+            ConfigValue::Usize(val) => val,
+            _ => 3,
+        };
+
+        let retry_delay = match configs.get_config(ConfigKey::RetryDelay) {
+            ConfigValue::U64(val) => val,
+            _ => 3000,
+        };
+
+        let verbose = match configs.get_config(ConfigKey::Verbose) {
+            ConfigValue::Bool(val) => val,
+            _ => false,
+        };
+
 
         let payload = ErrorPayload {
             client_id: &self.client_id,
@@ -59,7 +72,7 @@ impl ErrorDashboardClient {
             client_secret: &self.client_secret,
             client_id: &self.client_id,
             headers: None,
-            endpoint: "https://higuard-error-dashboard.com/sdk/error",
+            endpoint: "https://higuard-error-dashboard.shuttleapp.rs/sdk/error",
             body: Some(payload),
             retry_attempts,
             retry_delay: Duration::from_millis(retry_delay as u64),

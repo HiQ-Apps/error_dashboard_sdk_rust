@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 
+#[derive(Debug)]
 pub struct ErrorTracker {
     error_tracker: HashMap<String, u64>,
     max_age: Duration,
