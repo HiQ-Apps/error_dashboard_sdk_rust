@@ -3,7 +3,6 @@ use std::fmt;
 use std::sync::{Arc, Mutex};
 use reqwest::Client;
 use std::time::Duration;
-use tokio::time::sleep;
 use crate::error_tracker::ErrorTracker;
 use crate::configuration::{Configuration, ConfigKey, ConfigValue};
 use crate::fetch::{error_dashboard_fetch, CustomFetchProps, ErrorPayload, ErrorResponseType};
@@ -88,15 +87,20 @@ impl ErrorDashboardClient {
         }
 
         match error_dashboard_fetch(&self.client, props).await {
-            Ok(ErrorResponseType { is_success, .. }) if is_success => {
+            Ok(ErrorResponseType { is_success, is_error }) if is_success => {
                 if verbose {
                     println!("Error sent successfully");
                 }
                 self.error_tracker.lock().unwrap().add_timestamp(message);
             }
-            Ok(ErrorResponseType { is_error, .. }) if is_error => {
+            Ok(ErrorResponseType { is_success: _, is_error }) if is_error => {
                 if verbose {
                     println!("Error sending data to Higuard");
+                }
+            }
+            Ok(_) => {
+                if verbose {
+                    println!("Unhandled success response from the server");
                 }
             }
             Err(e) => {
