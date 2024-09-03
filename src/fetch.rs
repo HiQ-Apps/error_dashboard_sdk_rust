@@ -41,10 +41,12 @@ pub async fn error_dashboard_fetch(
 
     if let Some(custom_headers) = props.headers {
         for (key, value) in custom_headers {
-            headers.insert(key, value);
+            if let Some(key_str) = key {
+                headers.insert(key_str, value);
+            }
         }
     }
-
+    
     let request_builder = client.post(props.endpoint).headers(headers);
 
     let request_builder = if let Some(body) = props.body {
