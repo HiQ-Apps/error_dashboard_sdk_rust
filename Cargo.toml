@@ -1,5 +1,5 @@
 [package]
-name = "error_dashboard_rust"
+name = "higuard-sdk"
 authors = ["Derek Li derekli11204@gmail.com"]
 version = "0.1.0"
 edition = "2021"
